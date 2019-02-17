@@ -1,0 +1,25 @@
+#selection>.decision{
+    width:49%;
+    display:inline-block;
+}
+.decision{
+    height: 100%;
+    width:100%;
+    text-align: center;
+    
+}
+.decision>*{
+    float: none;
+}
+
+.chat{
+    position: fixed;     
+    text-align: center;    
+    bottom: 5px; 
+    background-color: orange;
+    right: 5px;;
+}
+
+#toggle-chat{
+    width: 350px;
+}
