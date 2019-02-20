@@ -1,5 +1,5 @@
 import {Decision, Evento, StoryLine} from './Libraries.js';
-
+import {saveToDB, loadDB} from './database.js';
 
 let evento1 = new Evento("hola1", "https://picsum.photos/200/300/?image=0", "Va a decision2", "decision2").save();
 let evento2 = new Evento("hola2", "https://picsum.photos/200/300/?image=1", "Va a decision2", "decision2").save();
@@ -27,7 +27,6 @@ for(let i =0; i<btns.length; i++){
 document.getElementById("toggle-chat").addEventListener("click", function(){
     document.getElementById("chatBox").hidden = !document.getElementById("chatBox").hidden;
 }, false);
-load("decision1");
 
 function loadIndividualEvent(data){
     let selection = document.getElementById("selection");
@@ -57,21 +56,99 @@ function loadDecision(data){
     }
 }
 
-function load(indexName){
-    let data = StoryLine[indexName];
-    if(indexName=="end"){
-        // TODO load firebase charts
-        print("acabaste");
-    }
-    else if(data instanceof Evento){
-        loadIndividualEvent(data);
-    }
-    else{
-        loadDecision(data)
-    }
+function loadDataBase(){
+    loadDB(loadCharts)
 }
 
+function createDomElement(position, elementName, attributes){
+    let element = document.createElement(elementName);
+    for(var key in attributes){
+        let att = document.createAttribute(key);      
+        att.value = attributes[key];
+        element.setAttributeNode(att)
+    }
+    position.appendChild(element);
+    return element;
+}
+
+function loadCharts(querySnapshot){
+    const chartsDiv = document.getElementById("charts");
+    let chartCont = 0;
+    let charts = []
+    querySnapshot.forEach(function(doc) {
+        let ctx = createDomElement(chartsDiv, "canvas", {
+            id: "chart"+chartCont,
+            width:"400",
+            height:"400"
+        }).getContext('2d');
+
+        let data = doc.data();
+        let chartData = {
+            datasets: [{
+                data: [],
+                backgroundColor: []
+            }],
+            labels: [ ]
+        }
+        for(var key in data){
+            chartData.labels.push(key)
+            chartData.datasets[0].data.push(data[key])
+            chartData.datasets[0].backgroundColor.push('rgb('+Math.ceil(Math.random()*255)+', '+Math.ceil(Math.random()*255)+', '+Math.ceil(Math.random()*255)+')')
+        }
+
+        charts.push(
+            new Chart(ctx,{
+                type: 'pie',
+                data: chartData,
+                options: {
+                    title: {
+                      display: true,
+                      text: doc.id
+                    }
+                  }
+            })
+        ); 
+        chartCont++;
+    });
+}
+
+let lastIndex;
+let lastIsDecision;
+function load(indexName){
+    let data = StoryLine[indexName];
+    
+    if(indexName=="end"){
+        // TODO create charts http://gionkunz.github.io/chartist-js/getting-started.html
+        print("acabaste");
+        // TODO thinking in using the callback to load the charts and leave this file only for the manipulation of the html
+        save(data, indexName, loadDataBase)
+    }
+    else {
+        save(data, indexName);
+        if(!lastIsDecision){
+            loadIndividualEvent(data);
+        }
+        else{
+            loadDecision(data)
+        }
+        lastIndex = indexName;
+
+    }
+    
+}
+
+function save(data, indexName, callback){
+    if(lastIndex != null && lastIsDecision){
+        saveToDB({
+            name:lastIndex,
+            opc:indexName
+        }, callback)
+    }
+    lastIsDecision = !(data instanceof Evento);
+}
 
 function print(something){
     console.log(something);
 }
+
+load("decision1");
