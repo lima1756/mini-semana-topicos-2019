@@ -8,4 +8,8 @@ La branch de javascript es una branch que no se centra en el diseño pero si en 
 
 Esta branch se centra en el diseño y la programación (maquetación) en html y css, con el framework de JS: [https://github.com/lima1756/mini-semana-topicos-2019](https://github.com/lima1756/mini-semana-topicos-2019)
 
-[Este es la fuente de este repositorio](https://github.com/huguintoch/Bandersnatch)
+[Este es la fuente original de este repositorio](https://github.com/huguintoch/Bandersnatch)
+
+## Wiki
+
+[https://github.com/lima1756/mini-semana-topicos-2019/wiki](https://github.com/lima1756/mini-semana-topicos-2019/wiki)
