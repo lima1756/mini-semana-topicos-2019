@@ -9,6 +9,8 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 		<script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/5.8.4/firebase.js"></script>
+		
 		<link href="main.css" rel="stylesheet">
 		<link rel="icon" href="matrix.ico">
 </head>
@@ -21,15 +23,17 @@
 <footer class="fixed-bottom">
 <div class="container-fluid">
 <div class="row text-center">
-		<div class="col-6">
-			<a href="#"><h2>Give in</h2></a>
+		<input value="inicio" id="nombre_decision" hidden="true"/>
+		<div class="col-6" id="opc1">
+			<a href="#" ><h2 id="txt1">Give in</h2></a>
 		</div>
-		<div class="col-6">
-			<a href="02.html"><h2>Don't say anything</h2></a>
+		<div class="col-6" id="opc2">
+			<a href="#" ><h2 id="txt2">Don't say anything</h2></a>
 		</div>
 </div>
 </div>
 </footer>
 
+<script src="database.js"></script>
 </body>
 </html>
